@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Báo cáo và Thống kê - Hệ thống quản lý bán thuốc" />
+  <title>Báo cáo và Thống kê - AdminPro</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="src/css/reset.css" />
+  <link rel="stylesheet" href="src/css/base.css" />
+  <link rel="stylesheet" href="src/css/dashboard.css" />
+  <link rel="stylesheet" href="src/css/baoCao.css" />
+  
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <div id="header"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div class="main-layout">
+      <div id="sidebar-container"></div>
+
+      <main class="content-area">
+        <div class="page-header">
+          <h1 class="page-title">📊 Báo cáo và Thống kê</h1>
+          <p class="page-subtitle">Phân tích dữ liệu kinh doanh và hiệu suất</p>
+        </div>
+
+        <div class="report-container">
+          <!-- DASHBOARD TỔNG QUAN -->
+          <div class="report-section">
+            <div class="section-header">
+              <h2 class="section-title">
+                <span>🎯</span>
+                Tổng quan
+              </h2>
+              <div class="filter-group" style="max-width: 250px; margin: 0;">
+                <select class="filter-select" id="dashboard-branch-filter">
+                  <option value="">Tất cả chi nhánh</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="stats-grid" id="dashboard-stats"></div>
+          </div>
+
+          <!-- BÁO CÁO DOANH THU THEO THÁNG -->
+          <div class="report-section">
+            <div class="section-header">
+              <h2 class="section-title">
+                <span>📈</span>
+                Doanh thu theo tháng
+              </h2>
+              <!-- <button class="export-btn" id="export-monthly-btn">
+                <span>📥</span>
+                Xuất báo cáo
+              </button> -->
+            </div>
+
+            <div class="filter-bar">
+              <div class="filter-group">
+                <label class="filter-label">Năm</label>
+                <select class="filter-select" id="monthly-year-filter"></select>
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Tháng</label>
+                <select class="filter-select" id="monthly-month-filter">
+                  <option value="">Tất cả các tháng</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Chi nhánh</label>
+                <select class="filter-select" id="monthly-branch-filter">
+                  <option value="">Tất cả chi nhánh</option>
+                </select>
+              </div>
+              <div class="filter-group" style="display: flex; align-items: flex-end;">
+                <button class="btn btn-primary" id="apply-monthly-filter">
+                  Áp dụng
+                </button>
+              </div>
+            </div>
+
+            <div class="chart-container" id="monthly-chart-container">
+              <canvas id="monthly-revenue-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- BÁO CÁO DOANH THU THEO NGÀY -->
+          <div class="report-section">
+            <div class="section-header">
+              <h2 class="section-title">
+                <span>📊</span>
+                Doanh thu theo ngày
+              </h2>
+            </div>
+
+            <div class="filter-bar">
+              <div class="filter-group">
+                <label class="filter-label">Từ ngày</label>
+                <input type="date" class="filter-input" id="daily-from-date" />
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Đến ngày</label>
+                <input type="date" class="filter-input" id="daily-to-date" />
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Chi nhánh</label>
+                <select class="filter-select" id="daily-branch-filter">
+                  <option value="">Tất cả chi nhánh</option>
+                </select>
+              </div>
+              <div class="filter-group" style="display: flex; align-items: flex-end;">
+                <button class="btn btn-primary" id="apply-daily-filter">
+                  Áp dụng
+                </button>
+              </div>
+            </div>
+
+            <div class="chart-container" id="daily-chart-container">
+              <canvas id="daily-revenue-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- HIỆU SUẤT NHÂN VIÊN -->
+          <div class="report-section">
+            <div class="section-header">
+              <h2 class="section-title">
+                <span>👥</span>
+                Hiệu suất nhân viên
+              </h2>
+            </div>
+
+            <div class="filter-bar">
+              <div class="filter-group">
+                <label class="filter-label">Từ ngày</label>
+                <input type="date" class="filter-input" id="employee-from-date" />
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Đến ngày</label>
+                <input type="date" class="filter-input" id="employee-to-date" />
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Chi nhánh</label>
+                <select class="filter-select" id="employee-branch-filter">
+                  <option value="">Tất cả chi nhánh</option>
+                </select>
+              </div>
+              <div class="filter-group" style="display: flex; align-items: flex-end;">
+                <button class="btn btn-primary" id="apply-employee-filter">
+                  Áp dụng
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive" id="employee-table-container">
+              <!-- Table will be rendered here -->
+            </div>
+
+            <div class="chart-container" id="employee-chart-container">
+              <canvas id="employee-performance-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="footer"></div>
+  </div>
+
+  <script type="module" src="src/js/pages/admin/baoCao.js"></script>
+</body>
+</html>

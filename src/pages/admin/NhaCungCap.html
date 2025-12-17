@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Quản lý nhà cung cấp - Hệ thống quản lý bán thuốc" />
+  <title>Quản lý nhà cung cấp - AdminPro</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../css/reset.css" />
+  <link rel="stylesheet" href="../../css/base.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <!-- ============================================ -->
+    <!-- HEADER -->
+    <!-- ============================================ -->
+    <div id="header"></div>
+
+    <!-- ============================================ -->
+    <!-- SIDEBAR OVERLAY (Mobile) -->
+    <!-- ============================================ -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- ============================================ -->
+    <!-- MAIN LAYOUT -->
+    <!-- ============================================ -->
+    <div class="main-layout">
+      <!-- Sidebar -->
+      <div id="sidebar-container"></div>
+
+      <!-- ============================================ -->
+      <!-- CONTENT AREA -->
+      <!-- ============================================ -->
+      <main class="content-area">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1 class="page-title">🏭 Quản lý nhà cung cấp</h1>
+          <p class="page-subtitle">Danh sách và quản lý các nhà cung cấp thuốc</p>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- TOOLBAR (Search + Add Button) -->
+        <!-- ============================================ -->
+        <div class="toolbar">
+          <div id="search-container"></div>
+
+          <button class="btn btn-primary" id="add-supplier-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+            Thêm nhà cung cấp
+          </button>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- TABLE CONTAINER -->
+        <!-- ============================================ -->
+        <div id="table-container"></div>
+      </main>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <div id="footer"></div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODAL ROOT -->
+  <!-- ============================================ -->
+  <div id="modal-root"></div>
+
+  <!-- ============================================ -->
+  <!-- FORM TEMPLATE (Hidden) -->
+  <!-- ============================================ -->
+  <template id="supplier-form-template">
+    <form id="supplier-form" class="supplier-form">
+      <!-- ========================================== -->
+      <!-- TÊN NHÀ CUNG CẤP -->
+      <!-- ========================================== -->
+      <div class="form-group">
+        <label class="form-label" for="tenNhaCungCap">
+          Tên nhà cung cấp <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-input"
+          id="tenNhaCungCap"
+          name="tenNhaCungCap"
+          placeholder="Ví dụ: Công ty Dược phẩm ABC..."
+          required
+          minlength="3"
+          maxlength="100" />
+        <small class="form-note" style="color: #64748b; font-size: 12px; display: block; margin-top: 4px;">
+          Tên nhà cung cấp phải có từ 3-100 ký tự
+        </small>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SỐ ĐIỆN THOẠI -->
+      <!-- ========================================== -->
+      <div class="form-group">
+        <label class="form-label" for="sdt">
+          Số điện thoại <span class="required">*</span>
+        </label>
+        <input
+          type="tel"
+          class="form-input"
+          id="sdt"
+          name="sdt"
+          placeholder="Ví dụ: 0901234567"
+          required
+          pattern="[0-9]{10,11}"
+          maxlength="11" />
+        <small class="form-note" style="color: #64748b; font-size: 12px; display: block; margin-top: 4px;">
+          Số điện thoại phải có 10-11 chữ số
+        </small>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- EMAIL -->
+      <!-- ========================================== -->
+      <div class="form-group">
+        <label class="form-label" for="email">
+          Email <span class="required">*</span>
+        </label>
+        <input
+          type="email"
+          class="form-input"
+          id="email"
+          name="email"
+          placeholder="Ví dụ: contact@company.com"
+          required
+          maxlength="100" />
+        <small class="form-note" style="color: #64748b; font-size: 12px; display: block; margin-top: 4px;">
+          Email phải đúng định dạng (có @ và domain)
+        </small>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- ĐỊA CHỈ -->
+      <!-- ========================================== -->
+      <div class="form-group">
+        <label class="form-label" for="diaChi">
+          Địa chỉ
+        </label>
+        <textarea
+          class="form-input"
+          id="diaChi"
+          name="diaChi"
+          placeholder="Nhập địa chỉ đầy đủ: Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố..."
+          rows="3"
+          maxlength="200"></textarea>
+        <small class="form-note" style="color: #64748b; font-size: 12px; display: block; margin-top: 4px;">
+          Địa chỉ tối đa 200 ký tự (không bắt buộc)
+        </small>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TRẠNG THÁI -->
+      <!-- ========================================== -->
+      <div class="form-group">
+        <label class="form-label" for="trangThai">
+          Trạng thái <span class="required">*</span>
+        </label>
+        <select class="form-select" id="trangThai" name="trangThai" required>
+          <option value="true">✅ Hoạt động</option>
+          <option value="false">🚫 Ngừng hoạt động</option>
+        </select>
+        <small class="form-note" style="color: #64748b; font-size: 12px; display: block; margin-top: 4px;">
+          Nhà cung cấp ngừng hoạt động sẽ không thể tạo đơn nhập hàng mới
+        </small>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- FORM ACTIONS -->
+      <!-- ========================================== -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="cancel-btn">
+          Hủy
+        </button>
+        <button type="submit" class="btn btn-primary" id="submit-btn">
+          <span class="btn-text">💾 Lưu</span>
+          <span class="btn-loading" style="display: none">
+            <span class="loading-spinner"></span> Đang xử lý...
+          </span>
+        </button>
+      </div>
+    </form>
+  </template>
+
+  <!-- ============================================ -->
+  <!-- JAVASCRIPT -->
+  <!-- ============================================ -->
+  <script type="module" src="../../js/pages/admin/NhaCungCap.js"></script>
+</body>
+</html>
